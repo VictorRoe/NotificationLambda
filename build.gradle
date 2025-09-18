@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'com.pragma.notification'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Dependencias de AWS Lambda
+    implementation 'com.amazonaws:aws-lambda-java-core:1.2.3'
+    implementation 'com.amazonaws:aws-lambda-java-events:3.11.0'
+
+    // Dependencia para el cliente de SNS y para parsear JSON
+    implementation platform('software.amazon.awssdk:bom:2.20.43')
+    implementation 'software.amazon.awssdk:sns'
+    implementation 'com.google.code.gson:gson:2.10.1'
+
+    // Dependencias para pruebas
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('build') {
+    dependsOn shadowJar
+}
+
+test {
+    useJUnitPlatform()
+}
